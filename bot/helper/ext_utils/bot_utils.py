@@ -131,10 +131,10 @@ def get_readable_message():
             #msg += f"\n<b>╰───────────────────────────╯</b>"
             if download.status() not in [MirrorStatus.STATUS_SPLITTING, MirrorStatus.STATUS_SEEDING]:
                 msg += f"\n<b>├[📡]ℙ𝕣𝕠𝕔𝕖𝕤𝕤𝕖𝕕➽</b> {get_readable_file_size(download.processed_bytes())} of {download.size()}"
-                msg += f"\n<b>├[🚀]𝕊𝕡𝕖𝕖𝕕➽</b> {download.speed()} \n<b>[⏳]𝔼𝕥𝕒➽</b> {download.eta()}"
+                msg += f"\n<b>├[🚀]𝕊𝕡𝕖𝕖𝕕➽</b> {download.speed()} \n<b>├[⏳]𝔼𝕥𝕒➽</b> {download.eta()}"
                 if hasattr(download, 'seeders_num'):
                     try:
-                        msg += f"\n<b>├[🍃] 𝕊𝕖𝕖𝕕𝕖𝕣𝕤➽</b> {download.seeders_num()} \n<b>[💬] 𝕃𝕖𝕖𝕔𝕙𝕖𝕣𝕤➽</b>  {download.leechers_num()}"
+                        msg += f"\n<b>├[🍃] 𝕊𝕖𝕖𝕕𝕖𝕣𝕤➽</b> {download.seeders_num()} \n<b>├[💬] 𝕃𝕖𝕖𝕔𝕙𝕖𝕣𝕤➽</b>  {download.leechers_num()}"
                     except:
                         pass
                 msg += f"\n<b>╰[📌]ℕ𝕒𝕞𝕖➽</b> <code>{escape(str(download.name()))}</code>"
