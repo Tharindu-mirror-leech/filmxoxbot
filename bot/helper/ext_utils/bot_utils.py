@@ -240,9 +240,13 @@ def get_readable_time(seconds: int) -> str:
 def is_url(url: str):
     url = re_findall(URL_REGEX, url)
     return bool(url)
-
+    
 def is_gdrive_link(url: str):
     return "drive.google.com" in url
+
+def is_gdtot_link(url: str):
+    url = re_match(r'https?://.+\.gdtot\.\S+', url)
+    return bool(url)
 
 def is_mega_link(url: str):
     return "mega.nz" in url or "mega.co.nz" in url
