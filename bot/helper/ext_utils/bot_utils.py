@@ -183,7 +183,7 @@ def get_readable_message():
         bmsg = f"\n<b>╭────────────•❅•°•❈•───────────╮</b>"
         #bmsg += f"\n<b>      🖥️ ℂ𝕡𝕦➮ </b> {cpu_percent()}% ❖ <b>📀𝔽𝕣𝕖𝕖➮ </b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
         #bmsg += f"\n<b>      🎮 ℝ𝕒𝕞➮ </b> {virtual_memory().percent}% ❖ <b>🌋𝕌𝕡𝕥𝕚𝕞𝕖➮ </b> {get_readable_time(time() - botStartTime)}"
-        bmsg += f"\n<b> ┃  🔽𝔻𝕃➮ </b> {get_readable_file_size(dl_speed)}/s🔻 ❖ <b>🔼𝕌𝕃➮ </b> {get_readable_file_size(up_speed)}/s🔺"
+        bmsg += f"\n<b>┃  🔽𝔻𝕃➮ </b> {get_readable_file_size(dl_speed)}/s🔻 ❖ <b>🔼𝕌𝕃➮ </b> {get_readable_file_size(up_speed)}/s🔺"
         #bmsg += f"\n<b>┗━━━━━━━━━━━•❅•°•❈•━━━━━━━━━━━┛</b>"
         #bmsg += f"\n<b>╰───────────────────────────╯</b>"
         bmsg += f"\n<b>╰────────────•❅•°•❈•───────────╯</b>"
