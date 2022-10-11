@@ -244,6 +244,9 @@ def is_url(url: str):
 def is_gdrive_link(url: str):
     return "drive.google.com" in url
 
+#def is_gdtot_link(url: str):
+   # url = re_match(r'https?://.+\.gdtot\.\S+', url)
+   # return bool(url)
 def is_gdtot_link(url: str):
     url = re_match(r'https?://.+\.gdtot\.\S+', url)
     return bool(url)
