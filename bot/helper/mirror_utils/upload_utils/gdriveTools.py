@@ -180,9 +180,7 @@ class GoogleDriveHelper:
         drive_file = self.__service.files().create(supportsTeamDrives=True,
                                                    body=file_metadata, media_body=media_body)
         response = None
-        while response is None:
-            if self.__is_cancelled:
-                break
+        while response is None and not self.__is_cancelled:
             try:
                 self.__status, response = drive_file.next_chunk()
             except HttpError as err:
@@ -430,7 +428,10 @@ class GoogleDriveHelper:
         file_id = file.get("id")
         if not IS_TEAM_DRIVE:
             self.__set_permission(file_id)
-        LOGGER.info("Created G-Drive Folder:\nName: {}\nID: {} ".format(file.get("name"), file_id))
+        LOGGER.info(
+            f'Created G-Drive Folder:\nName: {file.get("name")}\nID: {file_id} '
+        )
+
         return file_id
 
     def __upload_dir(self, input_directory, parent_id):
@@ -601,19 +602,19 @@ class GoogleDriveHelper:
                     continue
             if not Title:
                 msg += '<span class="container center rfontsize">' \
-                      f'<h4>✅ 𝐒𝐞𝐚𝐫𝐜𝐡 𝐑𝐞𝐬𝐮𝐥𝐭 𝐅𝐨𝐫 {fileName}</h4></span>'
+                          f'<h4>✅ 𝐒𝐞𝐚𝐫𝐜𝐡 𝐑𝐞𝐬𝐮𝐥𝐭 𝐅𝐨𝐫 {fileName}</h4></span>'
                 Title = True
             if len(DRIVES_NAMES) > 1 and DRIVES_NAMES[index] is not None:
                 msg += '<span class="container center rfontsize">' \
-                      f'<b>{DRIVES_NAMES[index]}</b></span>'
+                          f'<b>{DRIVES_NAMES[index]}</b></span>'
             for file in response.get('files', []):
                 mime_type = file.get('mimeType')
                 if mime_type == "application/vnd.google-apps.folder":
                     furl = f"https://drive.google.com/drive/folders/{file.get('id')}"
                     msg += '<span class="container start rfontsize">' \
-                          f"<div>📁 {file.get('name')} (folder)</div>" \
-                           '<div class="dlinks">' \
-                          f'<span> <a class="forhover" href="{furl}">🌩 𝙳𝚁𝙸𝚅𝙴-𝙻𝙸𝙽𝙺 🌩</a></span>'
+                              f"<div>📁 {file.get('name')} (folder)</div>" \
+                               '<div class="dlinks">' \
+                              f'<span> <a class="forhover" href="{furl}">🌩 𝙳𝚁𝙸𝚅𝙴-𝙻𝙸𝙽𝙺 🌩</a></span>'
                     if INDEX_URLS[index] is not None:
                         if isRecur:
                             url_path = "/".join([rquote(n, safe='') for n in self.__get_recursive_list(file, parent_id)])
@@ -621,20 +622,20 @@ class GoogleDriveHelper:
                             url_path = rquote(f'{file.get("name")}', safe='')
                         url = f'{INDEX_URLS[index]}/{url_path}/'
                         msg += '<span> | </span>' \
-                              f'<span> <a class="forhover" href="{url}">⚡ 𝙸𝙽𝙳𝙴𝚇-𝙻𝙸𝙽𝙺 🔰</a></span>'
+                                  f'<span> <a class="forhover" href="{url}">⚡ 𝙸𝙽𝙳𝙴𝚇-𝙻𝙸𝙽𝙺 🔰</a></span>'
                 elif mime_type == 'application/vnd.google-apps.shortcut':
                     furl = f"https://drive.google.com/drive/folders/{file.get('id')}"
                     msg += '<span class="container start rfontsize">' \
-                          f"<div>📁 {file.get('name')} (shortcut)</div>" \
-                           '<div class="dlinks">' \
-                          f'<span> <a class="forhover" href="{furl}">🌩 𝙳𝚁𝙸𝚅𝙴-𝙻𝙸𝙽𝙺 🌩</a></span>'\
-                           '</div></span>'
+                              f"<div>📁 {file.get('name')} (shortcut)</div>" \
+                               '<div class="dlinks">' \
+                              f'<span> <a class="forhover" href="{furl}">🌩 𝙳𝚁𝙸𝚅𝙴-𝙻𝙸𝙽𝙺 🌩</a></span>'\
+                               '</div></span>'
                 else:
                     furl = f"https://drive.google.com/uc?id={file.get('id')}&export=download"
                     msg += '<span class="container start rfontsize">' \
-                          f"<div>📄 {file.get('name')} ({get_readable_file_size(int(file.get('size', 0)))})</div>" \
-                           '<div class="dlinks">' \
-                          f'<span> <a class="forhover" href="{furl}">🌩 𝙳𝚁𝙸𝚅𝙴-𝙻𝙸𝙽𝙺 🌩</a></span>'
+                              f"<div>📄 {file.get('name')} ({get_readable_file_size(int(file.get('size', 0)))})</div>" \
+                               '<div class="dlinks">' \
+                              f'<span> <a class="forhover" href="{furl}">🌩 𝙳𝚁𝙸𝚅𝙴-𝙻𝙸𝙽𝙺 🌩</a></span>'
                     if INDEX_URLS[index] is not None:
                         if isRecur:
                             url_path = "/".join(rquote(n, safe='') for n in self.__get_recursive_list(file, parent_id))
@@ -642,11 +643,11 @@ class GoogleDriveHelper:
                             url_path = rquote(f'{file.get("name")}')
                         url = f'{INDEX_URLS[index]}/{url_path}'
                         msg += '<span> | </span>' \
-                              f'<span> <a class="forhover" href="{url}">⚡ 𝙸𝙽𝙳𝙴𝚇-𝙻𝙸𝙽𝙺 🔰</a></span>'
+                                  f'<span> <a class="forhover" href="{url}">⚡ 𝙸𝙽𝙳𝙴𝚇-𝙻𝙸𝙽𝙺 🔰</a></span>'
                         if VIEW_LINK:
                             urlv = f'{INDEX_URLS[index]}/{url_path}?a=view'
                             msg += '<span> | </span>' \
-                                  f'<span> <a class="forhover" href="{urlv}">✅ 𝚅𝙸𝙴𝚆-𝙻𝙸𝙽𝙺 💝</a></span>'
+                                      f'<span> <a class="forhover" href="{urlv}">✅ 𝚅𝙸𝙴𝚆-𝙻𝙸𝙽𝙺 💝</a></span>'
                 msg += '</div></span>'
                 contents_count += 1
             if noMulti:
@@ -775,7 +776,7 @@ class GoogleDriveHelper:
                 LOGGER.info(f"Total Attempts: {err.last_attempt.attempt_number}")
                 err = err.last_attempt.exception()
             err = str(err).replace('>', '').replace('<', '')
-            if "downloadQuotaExceeded" in str(err):
+            if "downloadQuotaExceeded" in err:
                 err = "Download Quota Exceeded."
             elif "File not found" in err:
                 token_service = self.__alt_authorize()

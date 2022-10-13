@@ -95,7 +95,6 @@ def setLeechType(update, context):
             pass
 
 def setThumb(update, context):
-    user_id = update.message.from_user.id
     reply_to = update.message.reply_to_message
     if reply_to is not None and reply_to.photo:
         path = "Thumbnails/"
@@ -103,6 +102,7 @@ def setThumb(update, context):
             mkdir(path)
         photo_msg = app.get_messages(update.message.chat.id, reply_to_message_ids=update.message.message_id)
         photo_dir = app.download_media(photo_msg, file_name=path)
+        user_id = update.message.from_user.id
         des_dir = ospath.join(path, f'{user_id}.jpg')
         Image.open(photo_dir).convert("RGB").save(des_dir, "JPEG")
         osremove(photo_dir)

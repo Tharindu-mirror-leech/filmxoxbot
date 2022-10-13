@@ -21,11 +21,11 @@ REPO_ = UPSTREAM_REPO
 BRANCH_ = UPSTREAM_BRANCH
 
 def gen_chlog(repo, diff):
-    ch_log = ''
     d_form = "%d/%m/%y"
-    for c in repo.iter_commits(diff):
-        ch_log += f'• [{c.committed_datetime.strftime(d_form)}]: {c.summary} **{c.author}**\n'
-    return ch_log
+    return ''.join(
+        f'• [{c.committed_datetime.strftime(d_form)}]: {c.summary} **{c.author}**\n'
+        for c in repo.iter_commits(diff)
+    )
 
 # Update Command
 
@@ -60,7 +60,7 @@ async def update_it(client, message):
     ups_rem = repo.remote("upstream")
     ups_rem.fetch(UPSTREAM_BRANCH)
     clogs = gen_chlog(repo, f'HEAD..upstream/{UPSTREAM_BRANCH}')
-    
+
     if not clogs:
         await msg_.edit(f"Bot up-to-date with **{UPSTREAM_BRANCH}**", parse_mode="Markdown")
         return

@@ -22,7 +22,7 @@ class MyLogger:
         # Hack to fix changing extension
         if not self.obj.is_playlist:
             if match := re_search(r'.Merger..Merging formats into..(.*?).$', msg) or \
-                        re_search(r'.ExtractAudio..Destination..(.*?)$', msg):
+                            re_search(r'.ExtractAudio..Destination..(.*?)$', msg):
                 LOGGER.info(msg)
                 newname = match.group(1)
                 newname = newname.rsplit("/", 1)[-1]
@@ -114,7 +114,7 @@ class YoutubeDLHelper:
         if get_info:
             self.opts['playlist_items'] = '0'
         if link.startswith(('rtmp', 'mms', 'rstp')):
-            self.opts['external_downloader'] = 'ffmpeg'    
+            self.opts['external_downloader'] = 'ffmpeg'
         with YoutubeDL(self.opts) as ydl:
             try:
                 result = ydl.extract_info(link, download=False)
@@ -141,7 +141,7 @@ class YoutubeDLHelper:
             ext = realName.split('.')[-1]
             if name == "":
                 newname = realName.split(f" [{result['id'].replace('*', '_')}]")
-                self.name = newname[0] + '.' + ext if len(newname) > 1 else newname[0]
+                self.name = f'{newname[0]}.{ext}' if len(newname) > 1 else newname[0]
             else:
                 self.name = f"{name}.{ext}"
 
@@ -176,15 +176,14 @@ class YoutubeDLHelper:
         self.extractMetaData(link, name, args)
         if self.__is_cancelled:
             return
-        if not self.is_playlist:
-            if args is None:
-                self.opts['outtmpl'] = f"{path}/{self.name}"
-            else:
-                folder_name = self.name.rsplit('.', 1)[0]
-                self.opts['outtmpl'] = f"{path}/{folder_name}/{self.name}"
-                self.name = folder_name
-        else:
+        if self.is_playlist:
             self.opts['outtmpl'] = f"{path}/{self.name}/%(title)s.%(ext)s"
+        elif args is None:
+            self.opts['outtmpl'] = f"{path}/{self.name}"
+        else:
+            folder_name = self.name.rsplit('.', 1)[0]
+            self.opts['outtmpl'] = f"{path}/{folder_name}/{self.name}"
+            self.name = folder_name
         self.__download(link)
 
     def cancel_download(self):
