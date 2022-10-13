@@ -26,8 +26,11 @@ def select(update, context):
             sendMessage("This is not an active task!", context.bot, update.message)
             return
     elif len(context.args) == 0:
-        msg = "Reply to an active /cmd which was used to start the qb-download or add gid along with cmd\n\n"
-        msg += "This command mainly for selection incase you decided to select files from already added torrent. "
+        msg = (
+            "Reply to an active /cmd which was used to start the qb-download or add gid along with cmd\n\n"
+            + "This command mainly for selection incase you decided to select files from already added torrent. "
+        )
+
         msg += "But you can always use /cmd with arg `s` to select files before download start."
         sendMessage(msg, context.bot, update.message)
         return
@@ -39,11 +42,11 @@ def select(update, context):
     if dl.status() not in [MirrorStatus.STATUS_DOWNLOADING, MirrorStatus.STATUS_PAUSED, MirrorStatus.STATUS_WAITING]:
         sendMessage('Task should be in downloading status or in pause status incase message deleted by wrong or in queued status incase you used torrent file!', context.bot, update.message)
         return
-    
+
     if dl.name().startswith('[METADATA]'):
         sendMessage('Try after downloading metadata finished!', context.bot, update.message)
         return
-    
+
     try:
         if dl.listener().isQbit:
             id_ = dl.download().ext_hash
